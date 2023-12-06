@@ -52,6 +52,12 @@ export const getOrderById = async (id) => {
     }
 }
 
+// Delete an order from the database based on its id using parameterized queries and returning success or failure
+export const deleteOrderById = async (id) => {
+    const result = await pool.query(`DELETE FROM orders WHERE id = $1`, [id]);
+    return result.rowCount > 0;
+}
+
 export const getOrderSummary = async () => {
     const orders = await getOrders();
     const total = parser.parse(`SUM(${orders.map(order => order.price * order.quantity).join(',')})`);
